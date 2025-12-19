@@ -1,5 +1,5 @@
-GET     /api/users          목록조회
-POST    /api/users          사용자 추가
-PUT     /api/users/{id}     사용자 수정
-DELETE  /api/users/{id}     단일 사용자 삭제
-DELETE  /api/users          다중 삭제
+GET     http://localhost:3000/users          목록조회
+POST    http://localhost:3000/users          사용자 추가
+PUT     http://localhost:3000/users/{id}     사용자 수정
+DELETE  http://localhost:3000/users/{id}     단일 사용자 삭제
+DELETE  /api/users                           다중 삭제
