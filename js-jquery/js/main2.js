@@ -35,5 +35,15 @@ $(document).ready(
                 $(".chk").length == $(".chk:checked").length
             )
         });
+
+        // CREATE 행 추가 prompt
+        // prompt란 대화형 박스 
+        $("#addBtn").on('click', function(){
+            const name = prompt('이름 입력');
+            const email = prompt('이메일 입력');
+            if(!name || !email) return;
+            const newID = users.length? [users.length-1].id+1 : 1;  // 삼항연산자 (? : );
+            check = age >= 19? '성인' : '미성년'; // 3항연산자
+        })
     }   
 );
