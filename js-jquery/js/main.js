@@ -8,5 +8,72 @@ $(document).ready(
         $("#btn").click(function(){
             $('#text').text('버튼 클릭됨');        
         })
+
+        // 전체선택
+        $("#checkall").on('change',function(){
+            $('.chk').prop('checked',this.checked);
+            const checked = $('.chk:checked').length
+            // 개수를 카운트
+            $('#count').text(checked)
+
+        });
+
+        // 개별체크로 전체 컨트롤
+        $('.chk').on('change',function(){
+            const total = $('.chk').length
+            const checked = $('.chk:checked').length
+            $('#checkall').prop('checked',total==checked)
+            // 개수를 카운트
+            $('#count').text(checked)
+
+        });
+
+        // 선택 삭제
+        $('#deleteBtn').click(function(){
+            $('.tchk:checked').each(function(){
+                $(this).closest('tr').remove()
+            });
+        });
+        // 버튼 비활성화(중복 클릭 방지)  저장 결제 api 호출
+        $('#saveBtn').click(function(){
+            $(this).prop('disabled',true)
+
+            setTimeout( ()=>{
+                $(this).prop('disabled',false)
+            },2000  );
+        });
+        // 입력값을 실시간 검증
+        // $('#username').on('input',function(){  // => 함수는 this를 바인딩 하지 않고 window객체를 
+        //     const val = $(this).val()
+        //     if (val.length < 3){
+        //         $('#msg').text('3자 이상 입력').css('color','red')
+        //     }else{
+        //         $('#msg').text('사용가능').css('color','green')
+        //     }
+        // });
+        $('#username').on('input',(e)=>{  // => 함수는 this를 바인딩 하지 않고 window객체를 
+            const val = e.target.value
+            if (val.length < 3){
+                $('#msg').text('3자 이상 입력').css('color','red')
+            }else{
+                $('#msg').text('사용가능').css('color','green')
+            }
+        });        
+        // 동적 요소 추가
+        let cnt = 1;
+        $('#addBtn').click(function(){
+            $('#list').append(
+                `
+                <div class="item">
+                    동적항목 ${cnt++}
+                    <span class="remove">삭제</span>
+                </div>
+                `
+            );
+        })
+
+        $('#list').on('click','.remove', function(){
+            $(this).parent().remove();
+        })
     }   
 );
