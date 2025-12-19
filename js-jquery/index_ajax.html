@@ -1,21 +1,38 @@
 <!-- 실제 서버없이 REST Full 방식으로 CRUD -->
  <!DOCTYPE html>
-<html lang="en">
-<head>
+ <html lang="en">
+ <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- css -->
+        <!-- css -->
     <link href="./css/style.css" rel="stylesheet" >
     <!-- jqeury CDN-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" ></script>
     <!-- local js -->
-    <script src="./js/main2.js"></script>    
-</head>
-<body>
+    <script src="./js/ajax_main.js"></script>
+ </head>
+ <body>
     <div class="container">
-        <h2>사용자 정보</h2>
-        <tbody id="userTable"></tbody>
+      <h2>사용자 정보</h2>
+      <table border="1" width="600">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkall"></inpu></th>
+                    <th>ID</th>
+                    <th>이메일</th>
+                    <th>이름</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+
+            </tbody>
+        </table>
+        <p>
+        <button id="addBtn">ADD</button>
+        <button id="deleteBtn">Selected REMOVE</button>
+        </p>
     </div>
-</body>
-</html>
+ </body>
+ </html>
