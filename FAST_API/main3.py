@@ -77,4 +77,16 @@ def create_tod(todo:TodoCreate):
 def get_all_todos():
     '''모든 todo조회'''
     return todos
-# id별로 조회
+
+# id별로 조회 id값을 어떻게 전달?  경로, 쿼리
+@app.get('/todos/{id}', response_model=TodoResponse)
+# @app.get('/find_todos', response_model=TodoResponse)  # http://127.0.0.1:8080/todos?id=2
+def get_todo(id:int):
+    '''특정 id로 찾기'''
+    for todo in todos:
+        if todo['id'] == id:
+            return todo
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail = f'id {id} 해당하는 데이터가 없습니다.'
+    )
