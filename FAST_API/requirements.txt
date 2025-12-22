@@ -1,0 +1,4 @@
+fastapi==0.115.0
+uvicorn==0.30.0
+
+# 실행 코드 : pip install -r FAST_API\requirements.txt
