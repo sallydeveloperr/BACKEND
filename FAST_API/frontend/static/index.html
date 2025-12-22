@@ -4,14 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>할일(Todo)</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" ></script>
+    <script src="/static/app.js/"></script>    
 </head>
 <body>
     <h1>할일 목록</h1>
-    <form method="get">  
-        <p><input type="text" id="todoTitle"  name="title" placeholder="제목입력"></p>
-        <p><input type="text" id="todoDescription" placeholder="설명을 입력하세요"></p>
+    <form method="post" id="todoForm">  
+        <p><input type="text" id="todoTitle"   placeholder="제목입력"></p>
+        <p><input type="text" id="todoDescription"  placeholder="설명을 입력하세요"></p>
         <button type="submit">등록</button>
         <button type="reset">초기화</button>
     </form>
+    <!-- todo목록 -->
+     <div id="todoList">
+        <!-- jquery로 동적생성 -->
+
+     </div>
 </body>
 </html>
