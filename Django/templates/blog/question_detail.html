@@ -12,7 +12,12 @@
     {% else %}
         <p>존재하지 않는 질문입니다.</p>
     {% endif %}
+    <hr>
+    <h3>댓글</h3>
+    <form action="{% url 'blog:answer_create' question.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="content" row="20"></textarea>
+        <button type="submit">등록</button>
+    </form>
 </body>
 </html>
-
-

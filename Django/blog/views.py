@@ -12,3 +12,10 @@ def detail(request,question_id):
     question = Question.objects.get(id=question_id)
     context = {'question':question}
     return render(request,'blog/question_detail.html',context)
+
+from django.utils import timezone
+from django.shortcuts import redirect
+def answer_create(request, question_id):  # url로 넘어온 데이터
+    question = Question.objects.get(id=question_id)
+    question.answer_set.create(content=request.POST.get('content'),create_at=timezone.now())
+    return redirect('blog:detail',question_id=question.id)
