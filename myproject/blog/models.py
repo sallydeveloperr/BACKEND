@@ -29,7 +29,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,null=True,
                                  blank=True,related_name='posts')   
     # 다대다
-    tag = models.ManyToManyField(Tag, blank=True,related_name='posts')
+    tags = models.ManyToManyField(Tag, blank=True,related_name='posts')
     created_at = models.DateTimeField(auto_now_add=True)  # 생성 시간 딱 한번만
     updated_at = models.DateTimeField(auto_now=True) # 수정 시간  자동갱신
     published = models.BooleanField(default=False)
