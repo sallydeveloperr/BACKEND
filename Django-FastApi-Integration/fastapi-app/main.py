@@ -5,8 +5,6 @@ from typing import List
 import models
 import schemas
 from database import engine, get_db
-from datetime import datetime
-
 
 # 테이블 생성
 models.Base.metadata.create_all(bind=engine)
