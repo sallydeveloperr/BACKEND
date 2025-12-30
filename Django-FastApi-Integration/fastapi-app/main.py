@@ -34,9 +34,18 @@ def root():
         'docs': '/docs',
         'endpoints' : {
             'products' : '/api/products',
-            'product':'/api/products/{id}'
+            'product':'/api/products/{id}',
+            'register':'/api/auth/register',
+            'login':'/api/auth/token',
+            'me':'/api/auth/me'
         }
     }
+# 인증관련
+@app.post('/api/auth/register',response_model=schemas.User,status_code=status.HTTP_201_CREATED)
+def register_user(user:schemas.UserCreate, db:Session=Depends(get_db)):
+    pass
+
+
 # 제품 목록 조회
 #response_model 
     # 반환데이터 자동검증

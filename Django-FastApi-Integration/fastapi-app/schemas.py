@@ -3,6 +3,43 @@ from typing import Optional   # 선택필드
 from datetime import datetime
 
 # 공통필드
+class UserBase(BaseModel):
+    username : str
+    email : str
+    full_name : Optional[str] = None
+    role : str = 'user'  # user, manager, admin
+
+
+class UserCreate(UserBase):
+    password : str  # 평문 패스워드
+
+class UserUpdate(BaseModel):
+    email : Optional[str] = None
+    full_name : Optional[str] = None
+    password : Optional[str] = None
+    role : Optional[str] = None
+
+class User(UserBase):
+    id : int
+    is_active : bool
+    created_at : datetime
+    updated_at : datetime
+    class Config:
+        from_attributes = True  # ORM 모델을 Pydantic 모델로 변환
+
+class UserInDB(User):
+    hashed_password : str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None 
+
+
+##########################################################################
+
 class ProductBase(BaseModel):
     name :str
     description :Optional[str] = None
