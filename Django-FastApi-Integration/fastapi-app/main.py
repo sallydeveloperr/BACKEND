@@ -5,6 +5,14 @@ from typing import List
 import models
 import schemas
 from database import engine, get_db
+from auth import (
+    authenticate_user,
+    create_access_token,
+    get_current_user,
+    get_password_hash,
+    check_permission,
+    ACCESS_TOKEN_EXPIRE_MINUTES
+)
 
 # 테이블 생성
 models.Base.metadata.create_all(bind=engine)
@@ -43,8 +51,33 @@ def root():
 # 인증관련
 @app.post('/api/auth/register',response_model=schemas.User,status_code=status.HTTP_201_CREATED)
 def register_user(user:schemas.UserCreate, db:Session=Depends(get_db)):
-    pass
-
+    '''사용자 등록'''
+    # 중복체크
+    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+    if db_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Username {user.username} is already registered"
+        )
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if db_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"email {user.email} is already registered"
+        )
+    # 사용자 생성
+    hashed_password =  get_password_hash(user.password)
+    db_user =  models.User(
+        username = user.username,
+        email = user.email,
+        full_name = user.full_name,
+        hashed_password = hashed_password,
+        role = user.role    
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 # 제품 목록 조회
 #response_model 
