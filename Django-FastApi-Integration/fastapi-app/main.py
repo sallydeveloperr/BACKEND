@@ -142,4 +142,4 @@ def delete_product(product_id:int, db:Session=Depends(get_db)):
         )
     db.delete(product)
     db.commit()
-    return None
+    return None,
