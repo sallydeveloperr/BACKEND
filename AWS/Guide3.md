@@ -1,3 +1,27 @@
+# Guide2번까지 실습한후...  ec2 + RDS 
+
+# 가상환경생성
+```
+   # 기존 venv 삭제 (선택사항)
+    rm -rf venv
+   
+    # Python 3.11로 가상환경 생성
+    python3.11 -m venv venv
+
+  2. 가상환경 활성화
+    source venv/bin/activate
+
+  3. 버전 확인
+  활성화된 상태에서 아래 명령어를 쳤을 때 Python 3.11.x가 나오면 성공입니다.
+
+ 4. 라이브러리 설치
+ pip install fastapi uvicorn sqlalchemy pymysql pydantic dotenv
+   python --version
+```
+
+
+fastapi_main.py
+```
 from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel
 from sqlalchemy import create_engine,Column, Integer, String,DateTime
@@ -63,7 +87,7 @@ def read_root():
     return {'status':'ok','time':datetime.now()}
 
 #사용자 생성
-@app.post('/users', response_model=UserResponse,status_code=status.HTTP_201_CREATED,summary='사용자 생성')
+@app.post('/users', response_model=UserResponse,status_code=status.HTTP_201_CREATED)
 def create_user(user:UserCreate, db:Session=Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
@@ -75,9 +99,11 @@ def create_user(user:UserCreate, db:Session=Depends(get_db)):
     return new_user
 
 #사용자 목록 조회
-
 #사용자 검색
-
 #사용자 정보 수정
+#사용자 정보 삭제
+       
+```
 
-#사용자 정보 삭제       
+# 실행
+uvicorn fastapi_main:app --host 0.0.0.0 --port 8000 --reload
