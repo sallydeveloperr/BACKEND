@@ -1,7 +1,7 @@
-boto3 
-python-multipart 
-pymysql 
-sqlalchemy 
+boto3   # aws s3 통신용
+python-multipart   # 파일 업로드
+pymysql    # RDS
+sqlalchemy # RDS
 uvicorn 
 fastapi 
 python-dotenv
