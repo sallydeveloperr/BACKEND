@@ -1,0 +1,7 @@
+boto3 
+python-multipart 
+pymysql 
+sqlalchemy 
+uvicorn 
+fastapi 
+python-dotenv
