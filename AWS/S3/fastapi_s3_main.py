@@ -43,11 +43,12 @@ def get_db():
 
 
 # 이미지 정보를 저장할 데이블 정의
-class UserImage(Base):
-    __tablename__ = 'user_images'
+class UserFile(Base):
+    __tablename__ = 'user_files'
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50))
-    image_url = Column(String(255))  # s3 url    
+    file_url = Column(String(255))  # s3 url    
+    filename = Column(String(255))
 
 # S3 클라언트 설정
 s3_client = boto3.client(
@@ -69,6 +70,7 @@ async def upload_image_to_s3_and_db(
     2. 생성된 s3 url을 RDS MySql에 저장
     '''
     # S3 업로드 로직
+    filename = file.filename
     file_extension = file.filename.split(".")[-1]
     unique_filename = f'{uuid.uuid4()}.{file_extension}'
     s3_key = f'uploads/{username}/{unique_filename}'
@@ -77,25 +79,25 @@ async def upload_image_to_s3_and_db(
         s3_client.upload_fileobj(file.file,S3_BUCKET_NAME,s3_key,
                                  ExtraArgs={'ContentType':file.content_type})
         # s3 공개 url 생성
-        image_url = f'https://{S3_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{s3_key}'
+        file_url = f'https://{S3_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{s3_key}'
         # RDS 저장 로직
-        new_image = UserImage(username=username, image_url=image_url)
-        db.add(new_image)
+        new_file = UserFile(username=username, file_url=file_url,filename=filename)
+        db.add(new_file)
         db.commit()
-        db.refresh(new_image)
+        db.refresh(new_file)
         return{
             'status':"success",
             'username':username,
-            's3_url':image_url,
-            'db_id':new_image.id
+            's3_url':file_url,
+            'db_id':new_file.id
         }
     except Exception as e:
-        db.rollback()
+        db.rollback()        
         raise HTTPException(status_code=500, detail=str(e))
 @app.get("/images/",tags=['S3-RDS'])
 def get_all_images(db:Session=Depends(get_db)):
     '''DB에 저장된 모든 이미지 목록 조회'''
-    return db.query(UserImage).all()
+    return db.query(UserFile).all()
 
 
 ################################## RDS ###########################
@@ -108,7 +110,7 @@ class User(Base):
     role = Column(String(20), default='member')
     created_at = Column(DateTime, default=datetime.now)
 
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)  # 테이블이 없으면 생성.. 생성된 테이블에 대한 alter 기능은 없다
 
 # pydantic 모델
 class UserCreate(BaseModel):
@@ -152,4 +154,4 @@ def create_user(user:UserCreate, db:Session=Depends(get_db)):
 
 #사용자 정보 수정
 
-#사용자 정보 삭제       
+#사용자 정보 삭제
